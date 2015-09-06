@@ -12,29 +12,19 @@ public class Utils {
 	private static File messageFile = new File("plugins/TeamSpeak", "messages.yml");
 	private static FileConfiguration messages = YamlConfiguration.loadConfiguration(messageFile);
 	  
-	private static String prefix = "";
-	private static String nopermission = "";
-	private static String console = "";
 	private static int rank = 0;
+	private static int maxIds = 1;
 	
-	public static void setPrefix(String prefix) {
-		Utils.prefix = prefix;
+	public static int getMaxIds() {
+		return maxIds;
 	}
 	
-	public static void setNopermission(String nopermission) {
-		Utils.nopermission = nopermission;
-	}
-	
-	public static void setConsole(String console) {
-		Utils.console = console;
+	public static void setMaxIds(int maxIds) {
+		Utils.maxIds = maxIds;
 	}
 	
 	public static void setRank(int rank) {
 		Utils.rank = rank;
-	}
-	
-	public static String getConsole() {
-		return console;
 	}
 	
 	public static File getMessageFile() {
@@ -44,15 +34,7 @@ public class Utils {
 	public static FileConfiguration getMessages() {
 		return messages;
 	}
-	
-	public static String getNopermission() {
-		return nopermission;
-	}
-	
-	public static String getPrefix() {
-		return prefix;
-	}
-	
+
 	public static int getRank() {
 		return rank;
 	}

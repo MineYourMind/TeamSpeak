@@ -1,6 +1,6 @@
 name: Teamspeak verifier
 author: Mauricius17
-version: 2.1
+version: 2.2
 
 main: de.mauricius17.teamspeak.verifier.system.TeamSpeakVerifier
  
@@ -8,6 +8,7 @@ commands:
   teamspeak:
     description: TeamSpeak commands
     usage: /teamspeak
+    aliases: [ts]
 
 permissions:
   teamspeak.verifier.add:

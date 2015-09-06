@@ -12,6 +12,7 @@ import com.github.theholywaffle.teamspeak3.TS3Query;
 
 import de.mauricius17.teamspeak.verifier.commands.TeamSpeakCommand;
 import de.mauricius17.teamspeak.verifier.mysql.MySQL;
+import de.mauricius17.teamspeak.verifier.utils.Messages;
 import de.mauricius17.teamspeak.verifier.utils.Utils;
 
 public class TeamSpeakVerifier extends JavaPlugin {
@@ -28,10 +29,12 @@ public class TeamSpeakVerifier extends JavaPlugin {
 		loadTeamSpeakConfig();
 		registerCommand();
 		
-		Utils.setConsole(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("teamspeak.console")));
-	    Utils.setNopermission(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("teamspeak.nopermission")));
-	    Utils.setPrefix(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("teamspeak.prefix")));
+		for(Messages m : Messages.values()) {
+			m.setMessage(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString(m.getPath())));
+		}
+	
 	    Utils.setRank(Utils.getTeamSpeakCfg().getInt("rank_up"));
+	    Utils.setMaxIds(Utils.getTeamSpeakCfg().getInt("max_addable_identities"));
 		
 	    new MySQL();
 	    
@@ -56,11 +59,12 @@ public class TeamSpeakVerifier extends JavaPlugin {
 	        }
 	        
 	        ts3config.setLoginCredentials(Utils.getTeamSpeakCfg().getString("username"), Utils.getTeamSpeakCfg().getString("password"));
-	        
+	        ts3config.setQueryPort(Utils.getTeamSpeakCfg().getInt("port.query"));
 	        ts3query = new TS3Query(ts3config);
 	        ts3query.connect();
 	        
-	        ts3query.getApi().selectVirtualServerById(1);
+	        ts3query.getApi().selectVirtualServerByPort(Utils.getTeamSpeakCfg().getInt("port.voice"));
+	       
 	        Bukkit.getConsoleSender().sendMessage("§aTeamSpeak connected!");
 	    } else {
 	    	Bukkit.getConsoleSender().sendMessage("§cYou have to setup the teamspeak settings in teamspeak.yml to connect to TeamSpeak!");
@@ -103,9 +107,12 @@ public class TeamSpeakVerifier extends JavaPlugin {
 	    Utils.getMessages().addDefault("command.teamspeak.help.footer", "&8===============================");
 	    
 	    Utils.getMessages().addDefault("command.teamspeak.spam", "&cPlease do not spam that command!");
+	    Utils.getMessages().addDefault("command.teamspeak.client_null", "&cThe client with the identity &e[IDENTITY] &cis not online!");
 	    
 	    Utils.getMessages().addDefault("identity.add.success", "&aYou added the identity &e[IDENTITY]");
 	    Utils.getMessages().addDefault("identity.add.failed", "&cThis identity is already verified!");
+	    Utils.getMessages().addDefault("identity.add.tomuchids", "&cYou have already verified the max size of identities!");
+	    
 	    Utils.getMessages().addDefault("identity.remove.success", "&aYou removed the identity &e[IDENTITY]");
 	    Utils.getMessages().addDefault("identity.remove.failed", "&cThis identity is not verified!");
 	    
@@ -133,7 +140,10 @@ public class TeamSpeakVerifier extends JavaPlugin {
 	    Utils.getTeamSpeakCfg().addDefault("host", "localhost");
 	    Utils.getTeamSpeakCfg().addDefault("username", "user");
 	    Utils.getTeamSpeakCfg().addDefault("password", "password");
+	    Utils.getTeamSpeakCfg().addDefault("port.query", 10011);
+	    Utils.getTeamSpeakCfg().addDefault("port.voice", 9987);
 	    Utils.getTeamSpeakCfg().addDefault("rank_up", Integer.valueOf(7));
+	    Utils.getTeamSpeakCfg().addDefault("max_addable_identities", 5);
 	    
 	    Utils.getTeamSpeakCfg().options().copyDefaults(true);
 	    

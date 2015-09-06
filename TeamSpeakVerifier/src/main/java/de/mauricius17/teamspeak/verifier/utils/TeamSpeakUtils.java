@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.github.theholywaffle.teamspeak3.api.wrapper.ClientInfo;
@@ -21,18 +20,29 @@ public class TeamSpeakUtils {
 			public void accept(String result) {				
 				String[] identities = result.split(";");
 				
+				if(identities.length >= Utils.getMaxIds()) {
+					p.sendMessage(Messages.PREFIX.getMessage() + Messages.IDENTITY_ADD_TOMUCHIDS.getMessage());
+					return;
+				}
+				
 				for(int i = 0; i < identities.length; i++) {
 					if(identities[i].equals(UId)) {
-						p.sendMessage(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("identity.add.failed")));
+						p.sendMessage(Messages.PREFIX.getMessage() + Messages.IDENTITY_ADD_FAILED.getMessage());
 						return;
 					}
 				}
 				
 				ClientInfo info = TeamSpeakVerifier.getTs3query().getApi().getClientByUId(UId);
-				int id = info.getDatabaseId();
-				TeamSpeakVerifier.getTs3query().getApi().addClientToServerGroup(rankId, id);	
-				TeamSpeakMySQL.addIdentity(UUIDFetcher.getUUID(p.getName()).toString(), UId);
-				p.sendMessage(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("identity.add.success").replace("[IDENTITY]", UId)));
+				
+				if(info != null) {
+					int id = info.getDatabaseId();
+					TeamSpeakVerifier.getTs3query().getApi().addClientToServerGroup(rankId, id);	
+					TeamSpeakMySQL.addIdentity(UUIDFetcher.getUUID(p.getName()).toString(), UId);
+					
+					p.sendMessage(Messages.PREFIX.getMessage() + Messages.IDENTITY_ADD_SUCCESS.getMessage().replace("[IDENTITY]", UId));
+				} else {
+					p.sendMessage(Messages.PREFIX.getMessage() + Messages.COMMAND_TEAMSPEAK_CLIENTNULL.getMessage().replace("[IDENTITY]", UId));
+				}
 			}
 		});
 	}
@@ -43,16 +53,21 @@ public class TeamSpeakUtils {
 			@Override
 			public void accept(String result) {
 				if(!result.contains(UId)) {
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("identity.remove.failed")));
+					p.sendMessage(Messages.PREFIX.getMessage() + Messages.IDENTITY_REMOVE_FAILED.getMessage());
 					return;
 				}
 				
 				ClientInfo info = TeamSpeakVerifier.getTs3query().getApi().getClientByUId(UId);
-				int id = info.getDatabaseId();
-				TeamSpeakVerifier.getTs3query().getApi().removeClientFromServerGroup(rankId, id);
-				TeamSpeakMySQL.removeIdentity(UUIDFetcher.getUUID(p.getName()).toString(), UId);
 				
-				p.sendMessage(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("identity.remove.success").replace("[IDENTITY]", UId)));
+				if(info != null) {
+					int id = info.getDatabaseId();
+					TeamSpeakVerifier.getTs3query().getApi().removeClientFromServerGroup(rankId, id);
+					TeamSpeakMySQL.removeIdentity(UUIDFetcher.getUUID(p.getName()).toString(), UId);
+					
+					p.sendMessage(Messages.PREFIX.getMessage() + Messages.IDENTITY_REMOVE_SUCCESS.getMessage().replace("[IDENTITY]", UId));	
+				} else {
+					p.sendMessage(Messages.PREFIX.getMessage() + Messages.COMMAND_TEAMSPEAK_CLIENTNULL.getMessage().replace("[IDENTITY]", UId));
+				}
 			}
 		});
 	}
@@ -65,24 +80,24 @@ public class TeamSpeakUtils {
 			@Override
 			public void accept(String result) {
 				if(result.equalsIgnoreCase("wrong") || result.equalsIgnoreCase(" ") || result.equalsIgnoreCase("")) {
-					p.sendMessage(Utils.getPrefix() + ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("identities.list.failed")));
+					p.sendMessage(Messages.PREFIX.getMessage() + Messages.IDENTITY_LIST_FAILED.getMessage());
 				} else {
-					
 					String[] identities = result.split(";");
 					
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("identities.list.header")));
-			        p.sendMessage(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("identities.list.message")));
+					p.sendMessage(Messages.IDENTITY_LIST_HEADER.getMessage());
+					p.sendMessage(Messages.IDENTITY_LIST_MESSAGE.getMessage());
 					
+			        
 					for(int i = 0; i < identities.length; i++) {
 						id.add(identities[i]);
 					}
 					
 					for(String ids : id) {
-						p.sendMessage(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("identities.list.list").replace("[IDS]", ids)));
+						p.sendMessage(Messages.IDENTITY_LIST_LIST.getMessage().replace("[IDS]", ids));
 					}
 					
 					id.clear();
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', Utils.getMessages().getString("identities.list.footer")));
+					p.sendMessage(Messages.IDENTITY_LIST_FOOTER.getMessage());
 				}
 			}
 		});
