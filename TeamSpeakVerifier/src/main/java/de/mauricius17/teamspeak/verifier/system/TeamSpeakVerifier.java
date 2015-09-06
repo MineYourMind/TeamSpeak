@@ -59,11 +59,15 @@ public class TeamSpeakVerifier extends JavaPlugin {
 	        }
 	        
 	        ts3config.setLoginCredentials(Utils.getTeamSpeakCfg().getString("username"), Utils.getTeamSpeakCfg().getString("password"));
-	        ts3config.setQueryPort(Utils.getTeamSpeakCfg().getInt("port.query"));
+	        ts3config.setQueryPort(Utils.getTeamSpeakCfg().getInt("server.port.query"));
 	        ts3query = new TS3Query(ts3config);
 	        ts3query.connect();
 	        
-	        ts3query.getApi().selectVirtualServerByPort(Utils.getTeamSpeakCfg().getInt("port.voice"));
+	        if(Utils.getTeamSpeakCfg().getBoolean("server.serverId.enable")) {
+		        ts3query.getApi().selectVirtualServerById(Utils.getTeamSpeakCfg().getInt("server.serverId.id"));	        	
+	        } else {
+	        	ts3query.getApi().selectVirtualServerByPort(Utils.getTeamSpeakCfg().getInt("server.port.voice"));	        	
+	        }
 	       
 	        Bukkit.getConsoleSender().sendMessage("§aTeamSpeak connected!");
 	    } else {
@@ -140,8 +144,11 @@ public class TeamSpeakVerifier extends JavaPlugin {
 	    Utils.getTeamSpeakCfg().addDefault("host", "localhost");
 	    Utils.getTeamSpeakCfg().addDefault("username", "user");
 	    Utils.getTeamSpeakCfg().addDefault("password", "password");
-	    Utils.getTeamSpeakCfg().addDefault("port.query", 10011);
-	    Utils.getTeamSpeakCfg().addDefault("port.voice", 9987);
+	    
+	    Utils.getTeamSpeakCfg().addDefault("server.serverId.enable", false);
+	    Utils.getTeamSpeakCfg().addDefault("server.serverId.id", 1);
+	    Utils.getTeamSpeakCfg().addDefault("server.port.query", 10011);
+	    Utils.getTeamSpeakCfg().addDefault("server.port.voice", 9987);
 	    Utils.getTeamSpeakCfg().addDefault("rank_up", Integer.valueOf(7));
 	    Utils.getTeamSpeakCfg().addDefault("max_addable_identities", 5);
 	    

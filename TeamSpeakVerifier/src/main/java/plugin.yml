@@ -1,6 +1,6 @@
 name: Teamspeak verifier
 author: Mauricius17
-version: 2.2
+version: 2.3
 
 main: de.mauricius17.teamspeak.verifier.system.TeamSpeakVerifier
  
