@@ -34,8 +34,12 @@
   </build>
   <repositories>
     <repository>
-      <id>minecraft</id>
-      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+      <id>MyM-maven-repo</id>
+      <url>https://github.com/MineYourMind/maven-repo/raw/master/</url>
+    </repository>
+    <repository>
+      <id>bukkit-repo</id>
+      <url>http://repo.bukkit.org/content/groups/public/</url>
     </repository>
     <repository>
       <snapshots>
