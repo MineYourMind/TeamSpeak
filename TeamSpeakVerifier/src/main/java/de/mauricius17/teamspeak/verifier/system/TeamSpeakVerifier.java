@@ -64,8 +64,10 @@ public class TeamSpeakVerifier extends JavaPlugin {
 	        //ts3config.setLoginCredentials(Utils.getTeamSpeakCfg().getString("username"), Utils.getTeamSpeakCfg().getString("password"));
 	        ts3config.setQueryPort(Utils.getTeamSpeakCfg().getInt("server.port.query"));
 	        ts3query = new TS3Query(ts3config);
-	        ts3query.getApi().login(Utils.getTeamSpeakCfg().getString("username"), Utils.getTeamSpeakCfg().getString("password"));
+	        
 	        ts3query.connect();
+	       
+	        ts3query.getApi().login(Utils.getTeamSpeakCfg().getString("username"), Utils.getTeamSpeakCfg().getString("password"));
 	        
 	        if(Utils.getTeamSpeakCfg().getBoolean("server.serverId.enable")) {
 		        ts3query.getApi().selectVirtualServerById(Utils.getTeamSpeakCfg().getInt("server.serverId.id"));	        	

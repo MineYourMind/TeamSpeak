@@ -1,7 +1,7 @@
 name: Teamspeak verifier
 author: Mauricius17
 version: 2.3
-
+depend: [UUIDProvider]
 main: de.mauricius17.teamspeak.verifier.system.TeamSpeakVerifier
  
 commands:
@@ -12,8 +12,8 @@ commands:
 
 permissions:
   teamspeak.verifier.add:
-    default: false
+    default: true
   teamspeak.verifier.remove:
-    default: false
+    default: true
   teamspeak.verifier.list:
-    default: false
+    default: true
