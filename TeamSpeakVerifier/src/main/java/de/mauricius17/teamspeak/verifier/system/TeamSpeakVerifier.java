@@ -75,7 +75,13 @@ public class TeamSpeakVerifier extends JavaPlugin {
 	        	ts3query.getApi().selectVirtualServerByPort(Utils.getTeamSpeakCfg().getInt("server.port.voice"));	        	
 	        }
 
-			ts3query.getApi().setNickname(Utils.getTeamSpeakCfg().getString("username"));
+			String nick = Utils.getTeamSpeakCfg().getString("username");
+			int num = 0;
+			// Set query name and add a number if name is taken
+			while (!ts3query.getApi().setNickname(nick)) {
+				num++;
+				nick = nick + num;
+			}
 
 			WelcomeMessage.main();
 	       
