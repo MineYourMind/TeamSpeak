@@ -2,6 +2,8 @@ package de.mauricius17.teamspeak.verifier.utils;
 
 public enum Messages {
 
+	WELCOME_MESSAGE("", "welcome_message"),
+
 	PREFIX("", "teamspeak.prefix"),
 	CONSOLE("", "teamspeak.console"),
 	NOPERMISSION("", "teamspeak.nopermission"),

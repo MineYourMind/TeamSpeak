@@ -74,6 +74,10 @@ public class TeamSpeakVerifier extends JavaPlugin {
 	        } else {
 	        	ts3query.getApi().selectVirtualServerByPort(Utils.getTeamSpeakCfg().getInt("server.port.voice"));	        	
 	        }
+
+			ts3query.getApi().setNickname(Utils.getTeamSpeakCfg().getString("username"));
+
+			WelcomeMessage.main();
 	       
 	        Bukkit.getConsoleSender().sendMessage("§aTeamSpeak connected!");
 	    } else {
@@ -105,7 +109,9 @@ public class TeamSpeakVerifier extends JavaPlugin {
 	
 	private void loadConfig() {
 		Utils.getMessages().options().header("In this file you can edit the messages. You should not remove the following: [IDENTITY] -> identity and [IDS] -> identities.");
-	    
+
+		Utils.getMessages().addDefault("welcome_message", "Welcome!");
+
 	    Utils.getMessages().addDefault("teamspeak.prefix", "&8[&5Teamspeak&8] ");
 	    Utils.getMessages().addDefault("teamspeak.nopermission", "&cYou do not have the permissions!");
 	    Utils.getMessages().addDefault("teamspeak.console", "&cThe console is not allowed to use that command!");
@@ -147,6 +153,7 @@ public class TeamSpeakVerifier extends JavaPlugin {
 		
 		Utils.getTeamSpeakCfg().addDefault("teamspeak", Boolean.valueOf(false));
 	    Utils.getTeamSpeakCfg().addDefault("debug_mode", Boolean.valueOf(false));
+		Utils.getTeamSpeakCfg().addDefault("welcome_message", Boolean.valueOf(false));
 	    Utils.getTeamSpeakCfg().addDefault("host", "localhost");
 	    Utils.getTeamSpeakCfg().addDefault("username", "user");
 	    Utils.getTeamSpeakCfg().addDefault("password", "password");
