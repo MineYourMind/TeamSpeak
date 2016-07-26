@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import com.github.theholywaffle.teamspeak3.TS3Api;
+import com.github.theholywaffle.teamspeak3.api.wrapper.DatabaseClientInfo;
 import org.bukkit.entity.Player;
 
 import com.github.theholywaffle.teamspeak3.api.wrapper.ClientInfo;
@@ -58,18 +60,15 @@ public class TeamSpeakUtils {
 					p.sendMessage(Messages.PREFIX.getMessage() + Messages.IDENTITY_REMOVE_FAILED.getMessage());
 					return;
 				}
-				
-				ClientInfo info = TeamSpeakVerifier.getTs3query().getApi().getClientByUId(UId);
-				
-				if(info != null) {
-					int id = info.getDatabaseId();
-					TeamSpeakVerifier.getTs3query().getApi().removeClientFromServerGroup(rankId, id);
-					TeamSpeakMySQL.removeIdentity(UUIDProvider.getCachedPlayer(p.getName()).toString(), UId);
-					
-					p.sendMessage(Messages.PREFIX.getMessage() + Messages.IDENTITY_REMOVE_SUCCESS.getMessage().replace("[IDENTITY]", UId));	
-				} else {
-					p.sendMessage(Messages.PREFIX.getMessage() + Messages.COMMAND_TEAMSPEAK_CLIENTNULL.getMessage().replace("[IDENTITY]", UId));
-				}
+				TS3Api api = TeamSpeakVerifier.getTs3query().getApi();
+
+				DatabaseClientInfo info = api.getDatabaseClientByUId(UId);
+
+				int id = info.getDatabaseId();
+				api.removeClientFromServerGroup(rankId, id);
+				TeamSpeakMySQL.removeIdentity(UUIDProvider.getCachedPlayer(p.getName()).toString(), UId);
+
+				p.sendMessage(Messages.PREFIX.getMessage() + Messages.IDENTITY_REMOVE_SUCCESS.getMessage().replace("[IDENTITY]", UId));
 			}
 		});
 	}
