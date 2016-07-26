@@ -31,6 +31,7 @@ public class WelcomeMessage {
 
                     if (!groups.contains("43")) {
                         ts3query.getApi().sendPrivateMessage(clientid, Messages.WELCOME_MESSAGE.getMessage());
+                        ts3query.getApi().sendPrivateMessage(clientid, Messages.WELCOME_MESSAGE2.getMessage());
                     }
                 }
             });

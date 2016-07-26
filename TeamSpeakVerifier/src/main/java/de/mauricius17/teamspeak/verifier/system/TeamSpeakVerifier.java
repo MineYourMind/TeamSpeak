@@ -117,6 +117,7 @@ public class TeamSpeakVerifier extends JavaPlugin {
 		Utils.getMessages().options().header("In this file you can edit the messages. You should not remove the following: [IDENTITY] -> identity and [IDS] -> identities.");
 
 		Utils.getMessages().addDefault("welcome_message", "Welcome!");
+		Utils.getMessages().addDefault("welcome_message2", "");
 
 	    Utils.getMessages().addDefault("teamspeak.prefix", "&8[&5Teamspeak&8] ");
 	    Utils.getMessages().addDefault("teamspeak.nopermission", "&cYou do not have the permissions!");

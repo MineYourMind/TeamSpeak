@@ -3,6 +3,7 @@ package de.mauricius17.teamspeak.verifier.utils;
 public enum Messages {
 
 	WELCOME_MESSAGE("", "welcome_message"),
+	WELCOME_MESSAGE2("", "welcome_message2"),
 
 	PREFIX("", "teamspeak.prefix"),
 	CONSOLE("", "teamspeak.console"),
